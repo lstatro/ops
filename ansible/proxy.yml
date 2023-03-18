@@ -1,0 +1,6 @@
+---
+- name: Setup squid proxies
+  hosts: all
+  become: yes
+  roles:
+    - proxy

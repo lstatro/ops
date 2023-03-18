@@ -1,0 +1,79 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Python3 and pip
+  become: true
+  apt:
+    name:
+      - python3
+      - python3-pip
+    state: latest
+
+# necessary for htpasswd to work
+- name: Install passlib pip package
+  pip:
+    name: passlib
+
+- name: Install Squid Proxy
+  apt:
+    name: squid
+    state: present
+
+# quality of life install, not directly necessary
+- name: Install patchutils
+  apt:
+    name: patchutils
+    state: present
+
+- htpasswd:
+    path: "{{ squid_passwd_file_path }}"
+    name: "{{ squid_username }}"
+    password: "{{ squid_password }}"
+    owner: root
+
+- name: Make a backup of the Squid Proxy configuration file
+  copy:
+    src: /etc/squid/squid.conf
+    dest: /etc/squid/squid.conf.{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}
+    remote_src: yes
+
+- name: Remove existing deny all references
+  become: true
+  replace:
+    path: /etc/squid/squid.conf
+    regexp: "^http_access deny all"
+    replace: "#http_access deny all"
+
+- name: Set http_port
+  lineinfile:
+    path: /etc/squid/squid.conf
+    regexp: "^http_port "
+    line: "http_port 54231"
+    state: present
+
+- name: Require squid authentication
+  blockinfile:
+    path: /etc/squid/squid.conf
+    block: |
+      auth_param basic program /usr/lib/squid/basic_ncsa_auth {{ squid_passwd_file_path }}
+      auth_param basic realm proxy Squid proxy-caching web server
+      acl authenticated proxy_auth REQUIRED
+
+      via off
+      forwarded_for delete
+      follow_x_forwarded_for deny all
+      request_header_access X-Forwarded-For deny all
+      header_access X_Forwarded_For deny all
+
+      http_access allow authenticated
+      http_access deny all
+  notify:
+    - restart_squid
+
+- name: Enable Squid Proxy to start with system boot
+  systemd:
+    name: squid
+    enabled: yes
+    state: started

@@ -1,0 +1,9 @@
+[droplets]
+%{ for ip in droplets ~}
+${ip}
+%{ endfor ~}
+
+[linodes]
+%{ for ip in linodes ~}
+${ip}
+%{ endfor ~}

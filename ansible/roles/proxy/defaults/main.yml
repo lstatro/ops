@@ -1,0 +1,3 @@
+squid_password: "{{ lookup('file', '../assets/proxies/squid-password.txt') }}"
+squid_username: squid
+squid_passwd_file_path: /etc/squid/passwd

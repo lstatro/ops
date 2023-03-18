@@ -1,0 +1,21 @@
+# dns leaking
+# proxy_dns
+
+# proxy type
+random_chain
+
+# timeouts
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+
+# proxy pools
+[ProxyList]
+# Droplets
+%{ for ip in droplets ~}
+http ${ip} 54231 ${username} ${password}
+%{ endfor ~}
+
+# Linodes
+%{ for ip in linodes ~}
+http ${ip} 54231 ${username} ${password}
+%{ endfor ~}
