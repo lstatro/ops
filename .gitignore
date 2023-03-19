@@ -1,7 +1,12 @@
 *.lock.hcl
+*.pyc
 *.tfstate
 *.tfstate.*
-*.txt
+.junk
+.ops
 .terraform
+.vscode
+__pycache__
 assets
 inventory/*.ini
+node_modules
