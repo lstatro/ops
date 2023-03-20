@@ -1,0 +1,9 @@
+---
+- name: Setup basic kali box
+  hosts: all
+  become: yes
+  roles:
+    - nvm
+    - disable_v6
+    - docker
+    - kali

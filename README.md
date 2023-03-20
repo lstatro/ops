@@ -33,10 +33,16 @@ Cloud provider default environment variables.
 # Examples
 
 ```shell
-# Deploy 1 DO proxy
 terraform \
   -chdir=terraform/proxies/ apply \
   -auto-approve \
   -var-file ../variables.tfvars \
   -var "digitalocean_count=1"
+```
+
+```shell
+terraform \
+  -chdir=terraform/kali/ apply \
+  -auto-approve \
+  -var-file ../variables.tfvars
 ```

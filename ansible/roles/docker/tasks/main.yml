@@ -1,0 +1,12 @@
+- name: Basic packages
+  apt:
+    name:
+      - docker.io
+    state: present
+
+- name: Enable Docker service
+  become: true
+  systemd:
+    name: docker
+    enabled: yes
+    state: started

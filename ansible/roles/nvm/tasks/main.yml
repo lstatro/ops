@@ -1,0 +1,10 @@
+---
+- name: Install nvm
+  shell: >
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v{{ nvm_version }}/install.sh | bash
+    creates=/home/{{ ansible_user_id }}/.nvm/nvm.sh
+
+- name: Install node and set version
+  shell: >
+    /bin/bash -c "source ~/.nvm/nvm.sh && nvm install --lts"
+    creates=/home/{{ ansible_user_id }}/.nvm/alias
