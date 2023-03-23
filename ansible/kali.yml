@@ -2,8 +2,19 @@
 - name: Setup basic kali box
   hosts: all
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3.10
   roles:
+    - gvm
+    - build-packages
+    - proxy-utilities
     - nvm
-    - disable_v6
+    - disable-v6
     - docker
-    - kali
+    - pagodo
+
+  # tasks:
+  #   - name: Reboot
+  #     reboot:
+  #       reboot_timeout: 300
+  #       msg: "rebooting..."

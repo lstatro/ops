@@ -1,0 +1,10 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Proxy Utilities
+  apt:
+    name:
+      - proxychains4
+      - tor
+    state: present

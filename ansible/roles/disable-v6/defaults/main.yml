@@ -1,0 +1,2 @@
+ipv6_disabled: True
+sysctl_conf_path: /etc/sysctl.conf

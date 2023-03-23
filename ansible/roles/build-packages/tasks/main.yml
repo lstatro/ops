@@ -1,0 +1,19 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Common Project Build Tools
+  apt:
+    name:
+      - htop
+      - curl
+      - jq
+      - git
+      - mercurial
+      - make
+      - binutils
+      - bison
+      - gcc
+      - build-essential
+      - python3.11-venv
+    state: present

@@ -1,0 +1,34 @@
+---
+- name: Install required dependencies
+  package:
+    name:
+      - curl
+      - git
+      - make
+      - binutils
+      - bison
+      - gcc
+    state: present
+
+- name: Remove previous GVM install
+  file:
+    path: "{{ ansible_env.HOME }}/.gvm"
+    state: absent
+
+- name: Install GVM (Go Version Manager)
+  shell: >
+    wget -qO- "{{ gvm_install_script }}" | bash -
+
+- name: Source GVM in .zshrc
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    line: '[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"'
+    state: present
+
+- name: Install go {{ go_version }}
+  shell: >
+    /bin/zsh -c "source ~/.zshrc && gvm install {{ go_version }} --binary"
+
+- name: Use go version {{ go_version }}
+  shell: >
+    /bin/zsh -c "source ~/.zshrc && gvm use {{ go_version }} --default"

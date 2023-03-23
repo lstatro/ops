@@ -1,0 +1,2 @@
+gvm_install_script: "https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer"
+go_version: go1.20.2

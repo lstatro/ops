@@ -1,0 +1,6 @@
+---
+- name: Clone Pagodo Repository
+  ignore_errors: true
+  git:
+    repo: "https://github.com/opsdisk/pagodo.git"
+    dest: "/root/pagodo"
