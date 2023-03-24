@@ -1,0 +1,1 @@
+go_get_latest: github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest

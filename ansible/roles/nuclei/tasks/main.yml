@@ -1,0 +1,6 @@
+---
+- name: Install Nuclei Via Go
+  retries: 3
+  delay: 10
+  shell: >
+    /bin/zsh -c "source ~/.zshrc && go install -v {{ go_get_latest }}"
