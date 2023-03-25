@@ -31,11 +31,12 @@ variable "linode_count" {
 locals {
   combined_path           = join("/", [var.inventory_path, var.project_path])
   inventory_path          = "${local.combined_path}/inventory.ini"
+  nginx_conf_path         = "${local.combined_path}/nginx.conf"
+  private_key_path        = "${local.combined_path}/private.key"
   proxychains_config_path = "${local.combined_path}/proxychains.config"
+  public_key_path         = "${local.combined_path}/cert.pub"
   root_password_path      = "${local.combined_path}/root-password.txt"
   squid_password_path     = "${local.combined_path}/squid-password.txt"
-  private_key_path        = "${local.combined_path}/private.key"
-  public_key_path         = "${local.combined_path}/cert.pub"
 }
 
 resource "random_password" "root_password" {
@@ -123,5 +124,16 @@ resource "local_file" "proxychains_config" {
     password : random_password.squid_password.result
   })
   filename   = local.proxychains_config_path
+  depends_on = [digitalocean_droplet.droplets, linode_instance.linodes]
+}
+
+resource "local_file" "nginx_conf" {
+  content = templatefile("nginx.conf.tftpl", {
+    droplets : digitalocean_droplet.droplets.*.ipv4_address
+    linodes : linode_instance.linodes.*.ip_address
+    username : var.squid_user_name
+    password : random_password.squid_password.result
+  })
+  filename   = local.nginx_conf_path
   depends_on = [digitalocean_droplet.droplets, linode_instance.linodes]
 }

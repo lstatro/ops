@@ -11,6 +11,7 @@
     - nvm
     - gvm
     - docker
+    - docker-compose
     - pagodo
     - nuclei
     - reboot

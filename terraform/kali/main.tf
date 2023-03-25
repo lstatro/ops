@@ -56,6 +56,22 @@ resource "linode_firewall" "home_firewall" {
     ipv4     = ["${data.http.home_ip.response_body}/32"]
   }
 
+  inbound {
+    label    = "allow-http"
+    action   = "ACCEPT"
+    protocol = "TCP"
+    ports    = "80"
+    ipv4     = ["${data.http.home_ip.response_body}/32"]
+  }
+
+  inbound {
+    label    = "allow-https"
+    action   = "ACCEPT"
+    protocol = "TCP"
+    ports    = "443"
+    ipv4     = ["${data.http.home_ip.response_body}/32"]
+  }
+
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
 
