@@ -1,0 +1,16 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install HAProxy
+  apt:
+    name: haproxy
+    state: present
+
+- name: Copy HAProxy Configuration
+  copy:
+    src: "{{ path_to_haproxy_cfg }}"
+    dest: /etc/haproxy/haproxy.cfg
+    mode: "0644"
+  ignore_errors: yes

@@ -31,7 +31,7 @@ variable "linode_count" {
 locals {
   combined_path           = join("/", [var.inventory_path, var.project_path])
   inventory_path          = "${local.combined_path}/inventory.ini"
-  nginx_conf_path         = "${local.combined_path}/nginx.conf"
+  haproxy_cfg_path        = "${local.combined_path}/haproxy.cfg"
   private_key_path        = "${local.combined_path}/private.key"
   proxychains_config_path = "${local.combined_path}/proxychains.config"
   public_key_path         = "${local.combined_path}/cert.pub"
@@ -127,13 +127,11 @@ resource "local_file" "proxychains_config" {
   depends_on = [digitalocean_droplet.droplets, linode_instance.linodes]
 }
 
-resource "local_file" "nginx_conf" {
-  content = templatefile("nginx.conf.tftpl", {
+resource "local_file" "haproxy_cfg" {
+  content = templatefile("haproxy.cfg.tftpl", {
     droplets : digitalocean_droplet.droplets.*.ipv4_address
     linodes : linode_instance.linodes.*.ip_address
-    username : var.squid_user_name
-    password : random_password.squid_password.result
   })
-  filename   = local.nginx_conf_path
+  filename   = local.haproxy_cfg_path
   depends_on = [digitalocean_droplet.droplets, linode_instance.linodes]
 }
