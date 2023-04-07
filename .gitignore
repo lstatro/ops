@@ -2,6 +2,7 @@
 *.pyc
 *.tfstate
 *.tfstate.*
+secret-vars.yml
 .junk
 .ops
 .terraform

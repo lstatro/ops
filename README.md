@@ -11,6 +11,13 @@ Run all commands from the project root.
 - `python3 -m venv .ops`
 - `source .ops/bin/activate`
 - `pip install -r requirements.txt`
+- `ansible-vault encrypt secret-vars.yml`
+  ```yaml
+  s3fs_bucket: <bucket name>
+  aws_access_key_id: <key id>
+  aws_secret_access_key: <secret>
+  region: <region>
+  ```
 
 ## System
 
@@ -45,4 +52,12 @@ terraform \
   -chdir=terraform/kali/ apply \
   -auto-approve \
   -var-file ../variables.tfvars
+
+ansible-playbook \
+  ansible/kali.yml \
+  -i assets/kali/inventory.ini \
+  -u root \
+  --private-key assets/kali/private.key \
+  --extra-vars @secret-vars.yml \
+  --ask-vault-password
 ```

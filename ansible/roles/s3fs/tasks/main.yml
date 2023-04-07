@@ -1,0 +1,32 @@
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install s3fs
+  apt:
+    name: s3fs
+    state: present
+
+- name: Create mount directory for {{ s3fs_bucket }} bucket
+  file:
+    path: /mnt/{{ s3fs_bucket }}
+    state: directory
+
+- name: Create s3fs configuration directory
+  file:
+    path: /etc/s3fs
+    state: directory
+
+- name: Create s3fs credentials file
+  template:
+    src: s3fs_credentials.j2
+    dest: /etc/s3fs/s3fs_credentials
+    mode: 0600
+
+- name: Mount {{ s3fs_bucket }} bucket using s3fs
+  mount:
+    path: /mnt/{{ s3fs_bucket }}
+    src: "s3fs#{{ s3fs_bucket }}"
+    fstype: fuse
+    opts: "allow_other,_netdev,use_cache=/tmp,uid=1000,gid=1000,umask=0000,mp_umask=0000,url=https://s3.amazonaws.com,passwd_file=/etc/s3fs/s3fs_credentials"
+    state: mounted

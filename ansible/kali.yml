@@ -12,6 +12,7 @@
     - gvm
     - docker
     - docker-compose
+    - s3fs
     - pagodo
     - haproxy
     - nuclei
