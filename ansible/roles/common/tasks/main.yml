@@ -16,4 +16,5 @@
       - gcc
       - build-essential
       - python3.11-venv
+      - zsh
     state: present
