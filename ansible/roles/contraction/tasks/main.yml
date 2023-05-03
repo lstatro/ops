@@ -1,0 +1,13 @@
+---
+- name: clone contraction repository
+  ignore_errors: true
+  git:
+    repo: "https://github.com/lstatro/contraction.git"
+    dest: "/root/{{ folder_name }}"
+    update: yes
+
+- name: Install dependencies
+  shell: |
+    source ~/.zshrc && cd {{ folder_name }} && npm ci
+  args:
+    executable: /bin/zsh

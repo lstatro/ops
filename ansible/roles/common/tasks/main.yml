@@ -2,7 +2,7 @@
   apt:
     update_cache: yes
 
-- name: Install Common Project Build Tools
+- name: Install Common packages
   apt:
     name:
       - htop

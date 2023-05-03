@@ -1,19 +1,45 @@
 ---
-- name: Setup basic kali box
+- name: Kali box setup
   hosts: all
   become: yes
   vars:
     ansible_python_interpreter: /usr/bin/python3.10
   roles:
-    - build-packages
-    - proxy-utilities
-    - disable-v6
-    - nvm
-    - gvm
-    - docker
-    - docker-compose
-    - s3fs
-    - pagodo
-    - haproxy
-    - nuclei
-    - reboot
+    - role: common
+      tags: [common, never]
+
+    - role: proxy-utilities
+      tags: [proxy-utilities, never]
+
+    - role: disable-v6
+      tags: [disable-v6, never]
+
+    - role: nvm
+      tags: [nvm, never]
+
+    - role: gvm
+      tags: [gvm, never]
+
+    - role: docker
+      tags: [docker, never]
+
+    - role: docker-compose
+      tags: [docker-compose, never]
+
+    - role: s3fs
+      tags: [s3fs, never]
+
+    - role: pagodo
+      tags: [pagodo, never]
+
+    - role: contraction
+      tags: [contraction, never]
+
+    - role: haproxy
+      tags: [haproxy, never]
+
+    - role: nuclei
+      tags: [nuclei, never]
+
+    - role: reboot
+      tags: [reboot, never]
